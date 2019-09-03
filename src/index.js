@@ -3,19 +3,16 @@ import ReactDOM from 'react-dom'
 import './styles/index.css'
 import App from './components/App'
 import { cacheExchange } from '@urql/exchange-graphcache'
-import { Provider, Client, defaultExchanges } from 'urql'
+// import { Provider, Client, defaultExchanges } from 'urql'
+import { Provider, Client, dedupExchange, fetchExchange } from 'urql'
+
+const cache = cacheExchange({})
 
 const client = new Client({
   url: 'http://localhost:4000',
-  exchanges: defaultExchanges
+  exchanges: [dedupExchange, cache, fetchExchange],
 })
 
-// const cache = cacheExchange({})
-
-// const client = new Client({
-//   url: 'http://localhost:4000',
-//   exchanges: [dedupExchange, cache, fetchExchange],
-// })
 
 ReactDOM.render(
   <Provider value={client}>
